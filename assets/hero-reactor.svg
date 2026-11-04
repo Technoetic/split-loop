@@ -1,0 +1,143 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="570" viewBox="0 0 600 570" fill="none" role="img" aria-labelledby="title desc">
+  <title id="title">하나의 섞인 루프에서, 목적별 두 번의 순회로</title>
+  <desc id="desc">라임과 보라색 회로가 얽힌 원래 루프가 아래의 첫 번째 라임 루프, 두 번째 보라 루프로 이어진다. 같은 데이터를 순서대로 두 번 순회한다.</desc>
+  <defs>
+    <linearGradient id="frame" x1="55" y1="42" x2="545" y2="547" gradientUnits="userSpaceOnUse"><stop stop-color="#344035"/><stop offset=".5" stop-color="#232b37"/><stop offset="1" stop-color="#3d354f"/></linearGradient>
+    <linearGradient id="panel" x1="300" y1="43" x2="300" y2="540" gradientUnits="userSpaceOnUse"><stop stop-color="#141a20" stop-opacity=".3"/><stop offset="1" stop-color="#11151e" stop-opacity=".8"/></linearGradient>
+    <linearGradient id="lime-track" x1="135" y1="168" x2="466" y2="282" gradientUnits="userSpaceOnUse"><stop stop-color="#829b54"/><stop offset=".35" stop-color="#d2ff7b"/><stop offset=".7" stop-color="#c3f85c"/><stop offset="1" stop-color="#698341"/></linearGradient>
+    <linearGradient id="violet-track" x1="137" y1="282" x2="474" y2="159" gradientUnits="userSpaceOnUse"><stop stop-color="#6d598d"/><stop offset=".45" stop-color="#a994ed"/><stop offset=".8" stop-color="#c1aeff"/><stop offset="1" stop-color="#73618b"/></linearGradient>
+    <radialGradient id="core-light"><stop stop-color="#6e7966" stop-opacity=".14"/><stop offset="1" stop-color="#1b2125" stop-opacity="0"/></radialGradient>
+    <radialGradient id="lower-light"><stop stop-color="#ab95ff" stop-opacity=".1"/><stop offset="1" stop-color="#ab95ff" stop-opacity="0"/></radialGradient>
+    <filter id="glow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="4"/></filter>
+    <filter id="small-glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="2"/></filter>
+    <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0v24" stroke="#677483" stroke-opacity=".065" stroke-width=".7"/></pattern>
+    <pattern id="dots" width="12" height="12" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".5" fill="#9eacba" fill-opacity=".1"/></pattern>
+    <marker id="arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="m1 1 5 3-5 3" stroke="#718166" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></marker>
+  </defs>
+
+  <!-- Instrument housing: deliberately open corners and a low-contrast coordinate grid. -->
+  <path d="M33 48H537l30 30v429l-30 29H33z" fill="url(#panel)"/>
+  <path d="M33 48H537l30 30v429l-30 29H33z" fill="url(#grid)"/>
+  <path d="M33 98V48h89m355 0h60l30 30v58m0 318v53l-30 29h-65m-340 0H33v-69" stroke="url(#frame)" stroke-width="1.2"/>
+  <path d="M41 53h11M38 58v11m519 430v8l-21 20" stroke="#586143" stroke-width="1.5"/>
+  <path d="M23 107h5m-5 12h5m-5 12h5m-5 12h5m-5 12h5m-5 12h5m-5 12h5m-5 12h5m-5 12h5m-5 12h5m-5 12h5m-5 12h5" stroke="#35402f"/>
+  <path d="M577 326h5m-5 12h5m-5 12h5m-5 12h5m-5 12h5m-5 12h5m-5 12h5m-5 12h5m-5 12h5m-5 12h5m-5 12h5m-5 12h5" stroke="#3d344e"/>
+  <g font-family="Consolas, monospace" font-size="8" letter-spacing="1.3">
+    <text x="58" y="79" fill="#8b9986">SPLIT LOOP / VISUALIZER</text>
+    <text x="464" y="79" fill="#637068">SYS. 01</text>
+  </g>
+  <circle cx="450" cy="76" r="2.5" fill="#c3f85c"/>
+  <path d="M58 93H542" stroke="#273329"/>
+
+  <!-- The large original loop: both purposes occupy the same pass. -->
+  <ellipse cx="303" cy="218" rx="235" ry="155" fill="url(#core-light)"/>
+  <g stroke="#2c3540" stroke-width=".8">
+    <path d="M83 274 504 118M92 129l421 165" stroke-dasharray="3 6"/>
+    <path d="M300 113v202M92 221h421" stroke-dasharray="2 7"/>
+    <ellipse cx="300" cy="219" rx="205" ry="90" transform="rotate(-19 300 219)"/>
+    <ellipse cx="300" cy="219" rx="150" ry="63" transform="rotate(-19 300 219)"/>
+  </g>
+  <g opacity=".45" stroke="#151c20" stroke-width="18">
+    <ellipse cx="300" cy="236" rx="177" ry="74" transform="rotate(-19 300 236)"/>
+  </g>
+  <g stroke="#303733" stroke-width=".8">
+    <ellipse cx="300" cy="232" rx="177" ry="74" transform="rotate(-19 300 232)"/>
+    <ellipse cx="300" cy="229" rx="177" ry="74" transform="rotate(-19 300 229)"/>
+    <ellipse cx="300" cy="226" rx="177" ry="74" transform="rotate(-19 300 226)"/>
+  </g>
+  <g opacity=".18" filter="url(#glow)">
+    <ellipse cx="300" cy="218" rx="177" ry="74" transform="rotate(-19 300 218)" stroke="#c3f85c" stroke-width="9"/>
+    <ellipse cx="300" cy="218" rx="177" ry="74" transform="rotate(19 300 218)" stroke="#ab95ff" stroke-width="9"/>
+  </g>
+  <ellipse cx="300" cy="218" rx="177" ry="74" transform="rotate(-19 300 218)" fill="#131b19" fill-opacity=".3" stroke="url(#lime-track)" stroke-width="4"/>
+  <ellipse cx="300" cy="218" rx="177" ry="74" transform="rotate(19 300 218)" fill="#191722" fill-opacity=".25" stroke="url(#violet-track)" stroke-width="3.5"/>
+  <ellipse cx="300" cy="218" rx="162" ry="63" transform="rotate(-19 300 218)" stroke="#739047" stroke-opacity=".35" stroke-width=".8"/>
+  <ellipse cx="300" cy="218" rx="162" ry="63" transform="rotate(19 300 218)" stroke="#9c86cc" stroke-opacity=".3" stroke-width=".8"/>
+  <!-- Break and reconnect the front trace to make the crossover legible. -->
+  <path d="M218 290c44 6 98-1 148-19" stroke="#11171b" stroke-width="10"/>
+  <path d="M218 290c44 6 98-1 148-19" stroke="#b9eb5c" stroke-width="4"/>
+  <path d="m345 273 9-8 8 1" stroke="#d7ff9a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="m221 151 9 9 8 1" stroke="#d9c8ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Tiny statement pads follow their own orbit. -->
+  <g transform="translate(148 204) rotate(-19)">
+    <rect x="-19" y="-12" width="38" height="24" rx="4" fill="#1f2a1a" stroke="#b6e268"/>
+    <path d="m-10-3-4 3 4 3m20-6 4 3-4 3M3-5-1 5" stroke="#d1fa95" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <g transform="translate(373 145) rotate(-19)">
+    <rect x="-19" y="-12" width="38" height="24" rx="4" fill="#1f2a1a" stroke="#b6e268"/>
+    <path d="M-10-4H9M-10 0H4M-10 4H9" stroke="#b6e268" stroke-width="1.2" stroke-linecap="round"/>
+  </g>
+  <g transform="translate(446 242) rotate(19)">
+    <rect x="-19" y="-12" width="38" height="24" rx="4" fill="#2b2437" stroke="#ae98e3"/>
+    <path d="m-10-3-4 3 4 3m20-6 4 3-4 3M3-5-1 5" stroke="#d1bfff" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <g transform="translate(235 277) rotate(19)">
+    <rect x="-19" y="-12" width="38" height="24" rx="4" fill="#2b2437" stroke="#ae98e3"/>
+    <path d="M-10-4H9M-10 0H4M-10 4H9" stroke="#c7aff7" stroke-width="1.2" stroke-linecap="round"/>
+  </g>
+  <g fill="#c3f85c">
+    <circle cx="195" cy="151" r="3"/><circle cx="449" cy="188" r="3"/>
+  </g>
+  <g fill="#c0aaff">
+    <circle cx="164" cy="165" r="2.5"/><circle cx="417" cy="285" r="2.5"/>
+  </g>
+  <path d="M263 205v25m14-33v41m14-41v41m14-41v41m14-41v41m14-33v25" stroke="#4a5745" stroke-width="1"/>
+  <path d="m297 201-9 30m25-30-9 30" stroke="#c3f85c" stroke-width="2.6" stroke-linecap="round"/>
+  <g font-family="Consolas, monospace" font-size="8" letter-spacing="1.1">
+    <text x="59" y="126" fill="#a7b39d">01 / MIXED LOOP</text>
+    <text x="435" y="318" fill="#738167">2 PURPOSES</text>
+  </g>
+  <path d="M60 136h34l29 31M433 308h-20l-16-16" stroke="#48533e" stroke-width=".8"/>
+
+  <!-- Sequential transformation trace; arrow runs through both complete passes. -->
+  <path d="M300 316v27H181v35" stroke="#61704b" stroke-width="1.2" stroke-dasharray="3 4" marker-end="url(#arrow)"/>
+  <rect x="266" y="331" width="69" height="23" rx="4" fill="#151e16" stroke="#475b35"/>
+  <text x="280" y="346" fill="#bddc91" font-family="Consolas, monospace" font-size="8" letter-spacing="1.3">SPLIT</text>
+  <path d="M58 359h58m369 0h57" stroke="#28332a"/>
+  <circle cx="59" cy="359" r="1.7" fill="#576845"/>
+  <circle cx="541" cy="359" r="1.7" fill="#62516e"/>
+
+  <!-- First purpose now has one whole pass over every record. -->
+  <ellipse cx="183" cy="429" rx="114" ry="76" fill="url(#core-light)"/>
+  <ellipse cx="183" cy="428" rx="83" ry="38" transform="rotate(-16 183 428)" fill="#172017" stroke="#34472c" stroke-width="1"/>
+  <ellipse cx="183" cy="420" rx="83" ry="38" transform="rotate(-16 183 420)" fill="#142014" stroke="#bce96b" stroke-width="2.7"/>
+  <ellipse cx="183" cy="420" rx="73" ry="29" transform="rotate(-16 183 420)" stroke="#57733c" stroke-width=".8" stroke-dasharray="2 3"/>
+  <path d="m235 401 9 2-5 7" stroke="#d4ff93" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M170 416h25m-12-12v25" stroke="#c3f85c" stroke-width="1.5"/>
+  <g transform="translate(117 429) rotate(-16)">
+    <rect x="-12" y="-9" width="24" height="18" rx="3" fill="#24341a" stroke="#a4d454"/>
+    <path d="M-6-2H6M-6 2H3" stroke="#c3f85c" stroke-width="1.2"/>
+  </g>
+  <circle cx="206" cy="383" r="3" fill="#c3f85c"/>
+  <circle cx="206" cy="383" r="4" fill="#c3f85c" opacity=".3" filter="url(#small-glow)"/>
+
+  <!-- Then the second purpose gets a separate whole pass. -->
+  <ellipse cx="418" cy="429" rx="114" ry="76" fill="url(#lower-light)"/>
+  <ellipse cx="418" cy="428" rx="83" ry="38" transform="rotate(-16 418 428)" fill="#1a1721" stroke="#463853" stroke-width="1"/>
+  <ellipse cx="418" cy="420" rx="83" ry="38" transform="rotate(-16 418 420)" fill="#1c1827" stroke="#aa92e7" stroke-width="2.7"/>
+  <ellipse cx="418" cy="420" rx="73" ry="29" transform="rotate(-16 418 420)" stroke="#5f4d7a" stroke-width=".8" stroke-dasharray="2 3"/>
+  <path d="m470 401 9 2-5 7" stroke="#d8c5ff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M407 412h22v16h-22zM413 408h10" stroke="#bca7f0" stroke-width="1.3" stroke-linejoin="round"/>
+  <g transform="translate(352 429) rotate(-16)">
+    <rect x="-12" y="-9" width="24" height="18" rx="3" fill="#2e233f" stroke="#a88cd6"/>
+    <path d="M-6-2H6M-6 2H3" stroke="#cdb7f6" stroke-width="1.2"/>
+  </g>
+  <circle cx="441" cy="383" r="3" fill="#bfa4f8"/>
+  <circle cx="441" cy="383" r="4" fill="#bfa4f8" opacity=".3" filter="url(#small-glow)"/>
+  <path d="M274 421h51" stroke="#73816b" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <text x="283" y="410" fill="#73816b" font-family="Consolas, monospace" font-size="7" letter-spacing=".8">THEN</text>
+  <g font-family="Consolas, monospace" font-size="8" letter-spacing="1">
+    <text x="125" y="482" fill="#b4cf92">02 / FIRST PASS</text>
+    <text x="357" y="482" fill="#b9a6d8">03 / SECOND PASS</text>
+  </g>
+  <path d="M58 502H542" stroke="#2a3234"/>
+  <g font-family="Consolas, monospace" font-size="7.5" letter-spacing="1">
+    <text x="59" y="521" fill="#6b7b65">SAME DATA. SEPARATE PURPOSES.</text>
+    <text x="418" y="521" fill="#b5d58c">OUTPUT = OUTPUT</text>
+  </g>
+  <circle cx="405" cy="518" r="2" fill="#c3f85c"/>
+  <g stroke="#506046" stroke-width=".8">
+    <path d="M52 36v-7m-3 4h6M544 552v-7m-3 4h6"/>
+  </g>
+</svg>

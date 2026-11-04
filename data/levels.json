@@ -1,0 +1,3342 @@
+{
+  "schema": 1,
+  "levels": [
+    {
+      "id": "01",
+      "title": "도시를 깨워라",
+      "subtitle": "섞인 센서 명령을 두 개의 독립 회로로 분리하세요.",
+      "purposes": {
+        "a": "전력 합산",
+        "b": "온도 감시"
+      },
+      "recordFields": [
+        "watts",
+        "backup",
+        "heat"
+      ],
+      "initial": {
+        "energy": 0,
+        "alerts": 0,
+        "heatTotal": 0
+      },
+      "records": [
+        {
+          "watts": 12,
+          "backup": 3,
+          "heat": 65
+        },
+        {
+          "watts": 8,
+          "backup": 1,
+          "heat": 80
+        },
+        {
+          "watts": 15,
+          "backup": 2,
+          "heat": 95
+        }
+      ],
+      "ops": [
+        {
+          "id": "power",
+          "purpose": "a",
+          "label": "기본 전력 모으기",
+          "code": "energy += row.watts;",
+          "kind": "sum",
+          "target": "energy",
+          "field": "watts"
+        },
+        {
+          "id": "alert",
+          "purpose": "b",
+          "label": "고온 경보 세기",
+          "code": "if (row.heat >= 80) alerts++;",
+          "kind": "count",
+          "target": "alerts",
+          "field": "heat",
+          "compare": "gte",
+          "value": 80
+        },
+        {
+          "id": "backup",
+          "purpose": "a",
+          "label": "보조 전력 더하기",
+          "code": "energy += row.backup;",
+          "kind": "sum",
+          "target": "energy",
+          "field": "backup"
+        },
+        {
+          "id": "heat",
+          "purpose": "b",
+          "label": "온도 합계 구하기",
+          "code": "heatTotal += row.heat;",
+          "kind": "sum",
+          "target": "heatTotal",
+          "field": "heat"
+        }
+      ],
+      "outputs": [
+        "energy",
+        "alerts",
+        "heatTotal"
+      ],
+      "hint": "전력과 온도는 서로의 값을 읽지 않습니다.",
+      "explanation": "전력 카드는 전력만, 온도 카드는 온도만 읽습니다. 두 목적을 묶으면 어느 반복문을 먼저 실행해도 출력과 레코드가 같습니다.",
+      "splitPossible": true,
+      "solution": {
+        "loop1": [
+          "power",
+          "backup"
+        ],
+        "loop2": [
+          "alert",
+          "heat"
+        ]
+      },
+      "cases": [
+        {
+          "name": "화면의 레코드",
+          "records": [
+            {
+              "watts": 12,
+              "backup": 3,
+              "heat": 65
+            },
+            {
+              "watts": 8,
+              "backup": 1,
+              "heat": 80
+            },
+            {
+              "watts": 15,
+              "backup": 2,
+              "heat": 95
+            }
+          ]
+        },
+        {
+          "name": "빈 레코드",
+          "records": []
+        },
+        {
+          "name": "영 하나",
+          "records": [
+            {
+              "watts": 0,
+              "backup": 0,
+              "heat": 0
+            }
+          ]
+        },
+        {
+          "name": "음수 하나",
+          "records": [
+            {
+              "watts": -6,
+              "backup": -3,
+              "heat": -15
+            }
+          ]
+        },
+        {
+          "name": "큰 값 하나",
+          "records": [
+            {
+              "watts": 1998,
+              "backup": 5,
+              "heat": 4995
+            }
+          ]
+        },
+        {
+          "name": "같은 값 둘",
+          "records": [
+            {
+              "watts": 4,
+              "backup": 2,
+              "heat": 10
+            },
+            {
+              "watts": 4,
+              "backup": 3,
+              "heat": 10
+            }
+          ]
+        },
+        {
+          "name": "역순 한 쌍",
+          "records": [
+            {
+              "watts": 14,
+              "backup": 0,
+              "heat": 35
+            },
+            {
+              "watts": 2,
+              "backup": 2,
+              "heat": 5
+            }
+          ]
+        },
+        {
+          "name": "영 반복",
+          "records": [
+            {
+              "watts": 0,
+              "backup": 0,
+              "heat": 0
+            },
+            {
+              "watts": 0,
+              "backup": 1,
+              "heat": 0
+            },
+            {
+              "watts": 0,
+              "backup": 2,
+              "heat": 0
+            }
+          ]
+        },
+        {
+          "name": "오름차순",
+          "records": [
+            {
+              "watts": 2,
+              "backup": 1,
+              "heat": 5
+            },
+            {
+              "watts": 4,
+              "backup": 3,
+              "heat": 10
+            },
+            {
+              "watts": 6,
+              "backup": 5,
+              "heat": 15
+            },
+            {
+              "watts": 8,
+              "backup": 0,
+              "heat": 20
+            }
+          ]
+        },
+        {
+          "name": "내림차순",
+          "records": [
+            {
+              "watts": 8,
+              "backup": 4,
+              "heat": 20
+            },
+            {
+              "watts": 6,
+              "backup": 4,
+              "heat": 15
+            },
+            {
+              "watts": 4,
+              "backup": 4,
+              "heat": 10
+            },
+            {
+              "watts": 2,
+              "backup": 4,
+              "heat": 5
+            }
+          ]
+        },
+        {
+          "name": "부호 혼합",
+          "records": [
+            {
+              "watts": -4,
+              "backup": -2,
+              "heat": -10
+            },
+            {
+              "watts": 0,
+              "backup": 1,
+              "heat": 0
+            },
+            {
+              "watts": 6,
+              "backup": 5,
+              "heat": 15
+            }
+          ]
+        },
+        {
+          "name": "경계값 주변",
+          "records": [
+            {
+              "watts": 18,
+              "backup": 2,
+              "heat": 45
+            },
+            {
+              "watts": 20,
+              "backup": 4,
+              "heat": 50
+            },
+            {
+              "watts": 22,
+              "backup": 6,
+              "heat": 55
+            }
+          ]
+        },
+        {
+          "name": "중복 다섯",
+          "records": [
+            {
+              "watts": 4,
+              "backup": 2,
+              "heat": 10
+            },
+            {
+              "watts": 4,
+              "backup": 3,
+              "heat": 10
+            },
+            {
+              "watts": 4,
+              "backup": 4,
+              "heat": 10
+            },
+            {
+              "watts": 4,
+              "backup": 5,
+              "heat": 10
+            },
+            {
+              "watts": 4,
+              "backup": 6,
+              "heat": 10
+            }
+          ]
+        },
+        {
+          "name": "교대 부호",
+          "records": [
+            {
+              "watts": 2,
+              "backup": 1,
+              "heat": 5
+            },
+            {
+              "watts": -2,
+              "backup": 0,
+              "heat": -5
+            },
+            {
+              "watts": 2,
+              "backup": 3,
+              "heat": 5
+            },
+            {
+              "watts": -2,
+              "backup": 2,
+              "heat": -5
+            },
+            {
+              "watts": 2,
+              "backup": 5,
+              "heat": 5
+            },
+            {
+              "watts": -2,
+              "backup": 4,
+              "heat": -5
+            }
+          ]
+        },
+        {
+          "name": "큰 값과 영",
+          "records": [
+            {
+              "watts": 1998,
+              "backup": 5,
+              "heat": 4995
+            },
+            {
+              "watts": 2,
+              "backup": 2,
+              "heat": 5
+            },
+            {
+              "watts": 0,
+              "backup": 2,
+              "heat": 0
+            }
+          ]
+        },
+        {
+          "name": "희소 신호",
+          "records": [
+            {
+              "watts": 0,
+              "backup": 0,
+              "heat": 0
+            },
+            {
+              "watts": 0,
+              "backup": 1,
+              "heat": 0
+            },
+            {
+              "watts": 10,
+              "backup": 0,
+              "heat": 25
+            },
+            {
+              "watts": 0,
+              "backup": 3,
+              "heat": 0
+            }
+          ]
+        },
+        {
+          "name": "단일 큰 신호",
+          "records": [
+            {
+              "watts": 146,
+              "backup": 3,
+              "heat": 365
+            }
+          ]
+        },
+        {
+          "name": "여섯 레코드",
+          "records": [
+            {
+              "watts": 6,
+              "backup": 3,
+              "heat": 15
+            },
+            {
+              "watts": 2,
+              "backup": 2,
+              "heat": 5
+            },
+            {
+              "watts": 8,
+              "backup": 6,
+              "heat": 20
+            },
+            {
+              "watts": 2,
+              "backup": 4,
+              "heat": 5
+            },
+            {
+              "watts": 10,
+              "backup": 2,
+              "heat": 25
+            },
+            {
+              "watts": 18,
+              "backup": 0,
+              "heat": 45
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "02",
+      "title": "야간 배송선",
+      "subtitle": "거리를 재는 회로와 오르막을 세는 회로를 재배선하세요.",
+      "purposes": {
+        "a": "주행 거리",
+        "b": "상승 구간"
+      },
+      "recordFields": [
+        "meters",
+        "climb",
+        "boost"
+      ],
+      "initial": {
+        "distance": 0,
+        "ascent": 0,
+        "hills": 0
+      },
+      "records": [
+        {
+          "meters": 40,
+          "climb": 5,
+          "boost": 2
+        },
+        {
+          "meters": 25,
+          "climb": 0,
+          "boost": 3
+        },
+        {
+          "meters": 35,
+          "climb": 8,
+          "boost": 1
+        }
+      ],
+      "ops": [
+        {
+          "id": "ascent",
+          "purpose": "b",
+          "label": "상승량 기록",
+          "code": "ascent += row.climb;",
+          "kind": "sum",
+          "target": "ascent",
+          "field": "climb"
+        },
+        {
+          "id": "distance",
+          "purpose": "a",
+          "label": "기본 거리 기록",
+          "code": "distance += row.meters;",
+          "kind": "sum",
+          "target": "distance",
+          "field": "meters"
+        },
+        {
+          "id": "hills",
+          "purpose": "b",
+          "label": "오르막 구간 세기",
+          "code": "if (row.climb > 0) hills++;",
+          "kind": "count",
+          "target": "hills",
+          "field": "climb",
+          "compare": "gt",
+          "value": 0
+        },
+        {
+          "id": "boost",
+          "purpose": "a",
+          "label": "부스트 거리 더하기",
+          "code": "distance += row.boost;",
+          "kind": "sum",
+          "target": "distance",
+          "field": "boost"
+        }
+      ],
+      "outputs": [
+        "distance",
+        "ascent",
+        "hills"
+      ],
+      "hint": "목적별로 모으세요. 모든 레코드는 두 반복문을 모두 지나갑니다.",
+      "explanation": "거리 합산은 상승량과 구간 수를 건드리지 않습니다. 레코드를 두 무리로 나누는 것이 아니라, 같은 모든 레코드를 목적마다 한 번씩 순회합니다.",
+      "splitPossible": true,
+      "solution": {
+        "loop1": [
+          "distance",
+          "boost"
+        ],
+        "loop2": [
+          "ascent",
+          "hills"
+        ]
+      },
+      "cases": [
+        {
+          "name": "화면의 레코드",
+          "records": [
+            {
+              "meters": 40,
+              "climb": 5,
+              "boost": 2
+            },
+            {
+              "meters": 25,
+              "climb": 0,
+              "boost": 3
+            },
+            {
+              "meters": 35,
+              "climb": 8,
+              "boost": 1
+            }
+          ]
+        },
+        {
+          "name": "빈 레코드",
+          "records": []
+        },
+        {
+          "name": "영 하나",
+          "records": [
+            {
+              "meters": 0,
+              "climb": 0,
+              "boost": 0
+            }
+          ]
+        },
+        {
+          "name": "음수 하나",
+          "records": [
+            {
+              "meters": -9,
+              "climb": -3,
+              "boost": -3
+            }
+          ]
+        },
+        {
+          "name": "큰 값 하나",
+          "records": [
+            {
+              "meters": 2997,
+              "climb": 999,
+              "boost": 3
+            }
+          ]
+        },
+        {
+          "name": "같은 값 둘",
+          "records": [
+            {
+              "meters": 6,
+              "climb": 2,
+              "boost": 2
+            },
+            {
+              "meters": 6,
+              "climb": 2,
+              "boost": 3
+            }
+          ]
+        },
+        {
+          "name": "역순 한 쌍",
+          "records": [
+            {
+              "meters": 21,
+              "climb": 7,
+              "boost": 3
+            },
+            {
+              "meters": 3,
+              "climb": 1,
+              "boost": 2
+            }
+          ]
+        },
+        {
+          "name": "영 반복",
+          "records": [
+            {
+              "meters": 0,
+              "climb": 0,
+              "boost": 0
+            },
+            {
+              "meters": 0,
+              "climb": 0,
+              "boost": 1
+            },
+            {
+              "meters": 0,
+              "climb": 0,
+              "boost": 2
+            }
+          ]
+        },
+        {
+          "name": "오름차순",
+          "records": [
+            {
+              "meters": 3,
+              "climb": 1,
+              "boost": 1
+            },
+            {
+              "meters": 6,
+              "climb": 2,
+              "boost": 3
+            },
+            {
+              "meters": 9,
+              "climb": 3,
+              "boost": 1
+            },
+            {
+              "meters": 12,
+              "climb": 4,
+              "boost": 3
+            }
+          ]
+        },
+        {
+          "name": "내림차순",
+          "records": [
+            {
+              "meters": 12,
+              "climb": 4,
+              "boost": 0
+            },
+            {
+              "meters": 9,
+              "climb": 3,
+              "boost": 0
+            },
+            {
+              "meters": 6,
+              "climb": 2,
+              "boost": 0
+            },
+            {
+              "meters": 3,
+              "climb": 1,
+              "boost": 0
+            }
+          ]
+        },
+        {
+          "name": "부호 혼합",
+          "records": [
+            {
+              "meters": -6,
+              "climb": -2,
+              "boost": -2
+            },
+            {
+              "meters": 0,
+              "climb": 0,
+              "boost": 1
+            },
+            {
+              "meters": 9,
+              "climb": 3,
+              "boost": 1
+            }
+          ]
+        },
+        {
+          "name": "경계값 주변",
+          "records": [
+            {
+              "meters": 27,
+              "climb": 9,
+              "boost": 1
+            },
+            {
+              "meters": 30,
+              "climb": 10,
+              "boost": 3
+            },
+            {
+              "meters": 33,
+              "climb": 11,
+              "boost": 1
+            }
+          ]
+        },
+        {
+          "name": "중복 다섯",
+          "records": [
+            {
+              "meters": 6,
+              "climb": 2,
+              "boost": 2
+            },
+            {
+              "meters": 6,
+              "climb": 2,
+              "boost": 3
+            },
+            {
+              "meters": 6,
+              "climb": 2,
+              "boost": 0
+            },
+            {
+              "meters": 6,
+              "climb": 2,
+              "boost": 1
+            },
+            {
+              "meters": 6,
+              "climb": 2,
+              "boost": 2
+            }
+          ]
+        },
+        {
+          "name": "교대 부호",
+          "records": [
+            {
+              "meters": 3,
+              "climb": 1,
+              "boost": 1
+            },
+            {
+              "meters": -3,
+              "climb": -1,
+              "boost": 0
+            },
+            {
+              "meters": 3,
+              "climb": 1,
+              "boost": 3
+            },
+            {
+              "meters": -3,
+              "climb": -1,
+              "boost": 2
+            },
+            {
+              "meters": 3,
+              "climb": 1,
+              "boost": 1
+            },
+            {
+              "meters": -3,
+              "climb": -1,
+              "boost": 0
+            }
+          ]
+        },
+        {
+          "name": "큰 값과 영",
+          "records": [
+            {
+              "meters": 2997,
+              "climb": 999,
+              "boost": 3
+            },
+            {
+              "meters": 3,
+              "climb": 1,
+              "boost": 2
+            },
+            {
+              "meters": 0,
+              "climb": 0,
+              "boost": 2
+            }
+          ]
+        },
+        {
+          "name": "희소 신호",
+          "records": [
+            {
+              "meters": 0,
+              "climb": 0,
+              "boost": 0
+            },
+            {
+              "meters": 0,
+              "climb": 0,
+              "boost": 1
+            },
+            {
+              "meters": 15,
+              "climb": 5,
+              "boost": 3
+            },
+            {
+              "meters": 0,
+              "climb": 0,
+              "boost": 3
+            }
+          ]
+        },
+        {
+          "name": "단일 큰 신호",
+          "records": [
+            {
+              "meters": 219,
+              "climb": 73,
+              "boost": 1
+            }
+          ]
+        },
+        {
+          "name": "여섯 레코드",
+          "records": [
+            {
+              "meters": 9,
+              "climb": 3,
+              "boost": 3
+            },
+            {
+              "meters": 3,
+              "climb": 1,
+              "boost": 2
+            },
+            {
+              "meters": 12,
+              "climb": 4,
+              "boost": 2
+            },
+            {
+              "meters": 3,
+              "climb": 1,
+              "boost": 0
+            },
+            {
+              "meters": 15,
+              "climb": 5,
+              "boost": 1
+            },
+            {
+              "meters": 27,
+              "climb": 9,
+              "boost": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "03",
+      "title": "신호 보정실",
+      "subtitle": "보정의 두 단계를 연결한 뒤 보고서를 만드세요.",
+      "purposes": {
+        "a": "신호 보정",
+        "b": "신호 보고"
+      },
+      "recordFields": [
+        "raw",
+        "scaled",
+        "calibrated"
+      ],
+      "initial": {
+        "rawTotal": 0,
+        "signalTotal": 0
+      },
+      "records": [
+        {
+          "raw": 3,
+          "scaled": 0,
+          "calibrated": 0
+        },
+        {
+          "raw": 7,
+          "scaled": 0,
+          "calibrated": 0
+        },
+        {
+          "raw": 2,
+          "scaled": 0,
+          "calibrated": 0
+        }
+      ],
+      "ops": [
+        {
+          "id": "scale",
+          "purpose": "a",
+          "label": "원신호 증폭",
+          "code": "row.scaled = row.raw * 2;",
+          "kind": "map",
+          "field": "scaled",
+          "source": "raw",
+          "factor": 2,
+          "offset": 0
+        },
+        {
+          "id": "rawReport",
+          "purpose": "b",
+          "label": "원신호 합계",
+          "code": "rawTotal += row.raw;",
+          "kind": "sum",
+          "target": "rawTotal",
+          "field": "raw"
+        },
+        {
+          "id": "calibrate",
+          "purpose": "a",
+          "label": "증폭 신호 보정",
+          "code": "row.calibrated = row.scaled + 3;",
+          "kind": "map",
+          "field": "calibrated",
+          "source": "scaled",
+          "factor": 1,
+          "offset": 3
+        },
+        {
+          "id": "signalReport",
+          "purpose": "b",
+          "label": "보정 신호 합계",
+          "code": "signalTotal += row.calibrated;",
+          "kind": "sum",
+          "target": "signalTotal",
+          "field": "calibrated"
+        }
+      ],
+      "outputs": [
+        "rawTotal",
+        "signalTotal"
+      ],
+      "hint": "보정 회로 안에서도 증폭 다음에 보정해야 합니다.",
+      "explanation": "먼저 모든 레코드의 scaled와 calibrated를 올바른 순서로 만듭니다. 그다음 보고서를 합산하면 원본과 같습니다. 보정을 증폭보다 먼저 두거나 보고서를 먼저 실행하면 결과가 달라집니다.",
+      "splitPossible": true,
+      "solution": {
+        "loop1": [
+          "scale",
+          "calibrate"
+        ],
+        "loop2": [
+          "rawReport",
+          "signalReport"
+        ]
+      },
+      "cases": [
+        {
+          "name": "화면의 레코드",
+          "records": [
+            {
+              "raw": 3,
+              "scaled": 0,
+              "calibrated": 0
+            },
+            {
+              "raw": 7,
+              "scaled": 0,
+              "calibrated": 0
+            },
+            {
+              "raw": 2,
+              "scaled": 0,
+              "calibrated": 0
+            }
+          ]
+        },
+        {
+          "name": "빈 레코드",
+          "records": []
+        },
+        {
+          "name": "영 하나",
+          "records": [
+            {
+              "raw": 0,
+              "scaled": 0,
+              "calibrated": 0
+            }
+          ]
+        },
+        {
+          "name": "음수 하나",
+          "records": [
+            {
+              "raw": -3,
+              "scaled": 0,
+              "calibrated": 0
+            }
+          ]
+        },
+        {
+          "name": "큰 값 하나",
+          "records": [
+            {
+              "raw": 999,
+              "scaled": 0,
+              "calibrated": 0
+            }
+          ]
+        },
+        {
+          "name": "같은 값 둘",
+          "records": [
+            {
+              "raw": 2,
+              "scaled": 0,
+              "calibrated": 0
+            },
+            {
+              "raw": 2,
+              "scaled": 0,
+              "calibrated": 0
+            }
+          ]
+        },
+        {
+          "name": "역순 한 쌍",
+          "records": [
+            {
+              "raw": 7,
+              "scaled": 0,
+              "calibrated": 0
+            },
+            {
+              "raw": 1,
+              "scaled": 0,
+              "calibrated": 0
+            }
+          ]
+        },
+        {
+          "name": "영 반복",
+          "records": [
+            {
+              "raw": 0,
+              "scaled": 0,
+              "calibrated": 0
+            },
+            {
+              "raw": 0,
+              "scaled": 0,
+              "calibrated": 0
+            },
+            {
+              "raw": 0,
+              "scaled": 0,
+              "calibrated": 0
+            }
+          ]
+        },
+        {
+          "name": "오름차순",
+          "records": [
+            {
+              "raw": 1,
+              "scaled": 0,
+              "calibrated": 0
+            },
+            {
+              "raw": 2,
+              "scaled": 0,
+              "calibrated": 0
+            },
+            {
+              "raw": 3,
+              "scaled": 0,
+              "calibrated": 0
+            },
+            {
+              "raw": 4,
+              "scaled": 0,
+              "calibrated": 0
+            }
+          ]
+        },
+        {
+          "name": "내림차순",
+          "records": [
+            {
+              "raw": 4,
+              "scaled": 0,
+              "calibrated": 0
+            },
+            {
+              "raw": 3,
+              "scaled": 0,
+              "calibrated": 0
+            },
+            {
+              "raw": 2,
+              "scaled": 0,
+              "calibrated": 0
+            },
+            {
+              "raw": 1,
+              "scaled": 0,
+              "calibrated": 0
+            }
+          ]
+        },
+        {
+          "name": "부호 혼합",
+          "records": [
+            {
+              "raw": -2,
+              "scaled": 0,
+              "calibrated": 0
+            },
+            {
+              "raw": 0,
+              "scaled": 0,
+              "calibrated": 0
+            },
+            {
+              "raw": 3,
+              "scaled": 0,
+              "calibrated": 0
+            }
+          ]
+        },
+        {
+          "name": "경계값 주변",
+          "records": [
+            {
+              "raw": 9,
+              "scaled": 0,
+              "calibrated": 0
+            },
+            {
+              "raw": 10,
+              "scaled": 0,
+              "calibrated": 0
+            },
+            {
+              "raw": 11,
+              "scaled": 0,
+              "calibrated": 0
+            }
+          ]
+        },
+        {
+          "name": "중복 다섯",
+          "records": [
+            {
+              "raw": 2,
+              "scaled": 0,
+              "calibrated": 0
+            },
+            {
+              "raw": 2,
+              "scaled": 0,
+              "calibrated": 0
+            },
+            {
+              "raw": 2,
+              "scaled": 0,
+              "calibrated": 0
+            },
+            {
+              "raw": 2,
+              "scaled": 0,
+              "calibrated": 0
+            },
+            {
+              "raw": 2,
+              "scaled": 0,
+              "calibrated": 0
+            }
+          ]
+        },
+        {
+          "name": "교대 부호",
+          "records": [
+            {
+              "raw": 1,
+              "scaled": 0,
+              "calibrated": 0
+            },
+            {
+              "raw": -1,
+              "scaled": 0,
+              "calibrated": 0
+            },
+            {
+              "raw": 1,
+              "scaled": 0,
+              "calibrated": 0
+            },
+            {
+              "raw": -1,
+              "scaled": 0,
+              "calibrated": 0
+            },
+            {
+              "raw": 1,
+              "scaled": 0,
+              "calibrated": 0
+            },
+            {
+              "raw": -1,
+              "scaled": 0,
+              "calibrated": 0
+            }
+          ]
+        },
+        {
+          "name": "큰 값과 영",
+          "records": [
+            {
+              "raw": 999,
+              "scaled": 0,
+              "calibrated": 0
+            },
+            {
+              "raw": 1,
+              "scaled": 0,
+              "calibrated": 0
+            },
+            {
+              "raw": 0,
+              "scaled": 0,
+              "calibrated": 0
+            }
+          ]
+        },
+        {
+          "name": "희소 신호",
+          "records": [
+            {
+              "raw": 0,
+              "scaled": 0,
+              "calibrated": 0
+            },
+            {
+              "raw": 0,
+              "scaled": 0,
+              "calibrated": 0
+            },
+            {
+              "raw": 5,
+              "scaled": 0,
+              "calibrated": 0
+            },
+            {
+              "raw": 0,
+              "scaled": 0,
+              "calibrated": 0
+            }
+          ]
+        },
+        {
+          "name": "단일 큰 신호",
+          "records": [
+            {
+              "raw": 73,
+              "scaled": 0,
+              "calibrated": 0
+            }
+          ]
+        },
+        {
+          "name": "여섯 레코드",
+          "records": [
+            {
+              "raw": 3,
+              "scaled": 0,
+              "calibrated": 0
+            },
+            {
+              "raw": 1,
+              "scaled": 0,
+              "calibrated": 0
+            },
+            {
+              "raw": 4,
+              "scaled": 0,
+              "calibrated": 0
+            },
+            {
+              "raw": 1,
+              "scaled": 0,
+              "calibrated": 0
+            },
+            {
+              "raw": 5,
+              "scaled": 0,
+              "calibrated": 0
+            },
+            {
+              "raw": 9,
+              "scaled": 0,
+              "calibrated": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "04",
+      "title": "화물 스캔 게이트",
+      "subtitle": "화물 통계와 순서 있는 게이트 서명을 분리하세요.",
+      "purposes": {
+        "a": "화물 통계",
+        "b": "게이트 기록"
+      },
+      "recordFields": [
+        "cargo",
+        "gate",
+        "tax"
+      ],
+      "initial": {
+        "cargoTotal": 0,
+        "heavy": 0,
+        "signature": 0,
+        "taxTotal": 0
+      },
+      "records": [
+        {
+          "cargo": 8,
+          "gate": 2,
+          "tax": 1
+        },
+        {
+          "cargo": 3,
+          "gate": 7,
+          "tax": 2
+        },
+        {
+          "cargo": 6,
+          "gate": 4,
+          "tax": 1
+        }
+      ],
+      "ops": [
+        {
+          "id": "cargo",
+          "purpose": "a",
+          "label": "화물 수량 합산",
+          "code": "cargoTotal += row.cargo;",
+          "kind": "sum",
+          "target": "cargoTotal",
+          "field": "cargo"
+        },
+        {
+          "id": "signature",
+          "purpose": "b",
+          "label": "게이트 번호 이어 쓰기",
+          "code": "signature = signature * 10 + row.gate;",
+          "kind": "fold",
+          "target": "signature",
+          "field": "gate",
+          "factor": 10
+        },
+        {
+          "id": "heavy",
+          "purpose": "a",
+          "label": "대형 화물 세기",
+          "code": "if (row.cargo >= 5) heavy++;",
+          "kind": "count",
+          "target": "heavy",
+          "field": "cargo",
+          "compare": "gte",
+          "value": 5
+        },
+        {
+          "id": "tax",
+          "purpose": "b",
+          "label": "게이트 비용 모으기",
+          "code": "taxTotal += row.tax;",
+          "kind": "sum",
+          "target": "taxTotal",
+          "field": "tax"
+        }
+      ],
+      "outputs": [
+        "cargoTotal",
+        "heavy",
+        "signature",
+        "taxTotal"
+      ],
+      "hint": "레코드 순서는 유지됩니다. 274와 472는 다릅니다.",
+      "explanation": "게이트 서명은 레코드의 순서에 민감하지만 두 반복문 모두 원래 레코드 순서로 돕니다. 서로 독립적인 화물 통계를 떼어 내도 게이트 서명은 보존됩니다.",
+      "splitPossible": true,
+      "solution": {
+        "loop1": [
+          "cargo",
+          "heavy"
+        ],
+        "loop2": [
+          "signature",
+          "tax"
+        ]
+      },
+      "cases": [
+        {
+          "name": "화면의 레코드",
+          "records": [
+            {
+              "cargo": 8,
+              "gate": 2,
+              "tax": 1
+            },
+            {
+              "cargo": 3,
+              "gate": 7,
+              "tax": 2
+            },
+            {
+              "cargo": 6,
+              "gate": 4,
+              "tax": 1
+            }
+          ]
+        },
+        {
+          "name": "빈 레코드",
+          "records": []
+        },
+        {
+          "name": "영 하나",
+          "records": [
+            {
+              "cargo": 0,
+              "gate": 0,
+              "tax": 0
+            }
+          ]
+        },
+        {
+          "name": "음수 하나",
+          "records": [
+            {
+              "cargo": -3,
+              "gate": 7,
+              "tax": 3
+            }
+          ]
+        },
+        {
+          "name": "큰 값 하나",
+          "records": [
+            {
+              "cargo": 999,
+              "gate": 9,
+              "tax": 4
+            }
+          ]
+        },
+        {
+          "name": "같은 값 둘",
+          "records": [
+            {
+              "cargo": 2,
+              "gate": 2,
+              "tax": 2
+            },
+            {
+              "cargo": 2,
+              "gate": 2,
+              "tax": 3
+            }
+          ]
+        },
+        {
+          "name": "역순 한 쌍",
+          "records": [
+            {
+              "cargo": 7,
+              "gate": 7,
+              "tax": 2
+            },
+            {
+              "cargo": 1,
+              "gate": 1,
+              "tax": 2
+            }
+          ]
+        },
+        {
+          "name": "영 반복",
+          "records": [
+            {
+              "cargo": 0,
+              "gate": 0,
+              "tax": 0
+            },
+            {
+              "cargo": 0,
+              "gate": 0,
+              "tax": 1
+            },
+            {
+              "cargo": 0,
+              "gate": 0,
+              "tax": 2
+            }
+          ]
+        },
+        {
+          "name": "오름차순",
+          "records": [
+            {
+              "cargo": 1,
+              "gate": 1,
+              "tax": 1
+            },
+            {
+              "cargo": 2,
+              "gate": 2,
+              "tax": 3
+            },
+            {
+              "cargo": 3,
+              "gate": 3,
+              "tax": 0
+            },
+            {
+              "cargo": 4,
+              "gate": 4,
+              "tax": 2
+            }
+          ]
+        },
+        {
+          "name": "내림차순",
+          "records": [
+            {
+              "cargo": 4,
+              "gate": 4,
+              "tax": 4
+            },
+            {
+              "cargo": 3,
+              "gate": 3,
+              "tax": 4
+            },
+            {
+              "cargo": 2,
+              "gate": 2,
+              "tax": 4
+            },
+            {
+              "cargo": 1,
+              "gate": 1,
+              "tax": 4
+            }
+          ]
+        },
+        {
+          "name": "부호 혼합",
+          "records": [
+            {
+              "cargo": -2,
+              "gate": 8,
+              "tax": 2
+            },
+            {
+              "cargo": 0,
+              "gate": 0,
+              "tax": 1
+            },
+            {
+              "cargo": 3,
+              "gate": 3,
+              "tax": 0
+            }
+          ]
+        },
+        {
+          "name": "경계값 주변",
+          "records": [
+            {
+              "cargo": 9,
+              "gate": 9,
+              "tax": 4
+            },
+            {
+              "cargo": 10,
+              "gate": 0,
+              "tax": 1
+            },
+            {
+              "cargo": 11,
+              "gate": 1,
+              "tax": 3
+            }
+          ]
+        },
+        {
+          "name": "중복 다섯",
+          "records": [
+            {
+              "cargo": 2,
+              "gate": 2,
+              "tax": 2
+            },
+            {
+              "cargo": 2,
+              "gate": 2,
+              "tax": 3
+            },
+            {
+              "cargo": 2,
+              "gate": 2,
+              "tax": 4
+            },
+            {
+              "cargo": 2,
+              "gate": 2,
+              "tax": 0
+            },
+            {
+              "cargo": 2,
+              "gate": 2,
+              "tax": 1
+            }
+          ]
+        },
+        {
+          "name": "교대 부호",
+          "records": [
+            {
+              "cargo": 1,
+              "gate": 1,
+              "tax": 1
+            },
+            {
+              "cargo": -1,
+              "gate": 9,
+              "tax": 2
+            },
+            {
+              "cargo": 1,
+              "gate": 1,
+              "tax": 3
+            },
+            {
+              "cargo": -1,
+              "gate": 9,
+              "tax": 4
+            },
+            {
+              "cargo": 1,
+              "gate": 1,
+              "tax": 0
+            },
+            {
+              "cargo": -1,
+              "gate": 9,
+              "tax": 1
+            }
+          ]
+        },
+        {
+          "name": "큰 값과 영",
+          "records": [
+            {
+              "cargo": 999,
+              "gate": 9,
+              "tax": 4
+            },
+            {
+              "cargo": 1,
+              "gate": 1,
+              "tax": 2
+            },
+            {
+              "cargo": 0,
+              "gate": 0,
+              "tax": 2
+            }
+          ]
+        },
+        {
+          "name": "희소 신호",
+          "records": [
+            {
+              "cargo": 0,
+              "gate": 0,
+              "tax": 0
+            },
+            {
+              "cargo": 0,
+              "gate": 0,
+              "tax": 1
+            },
+            {
+              "cargo": 5,
+              "gate": 5,
+              "tax": 2
+            },
+            {
+              "cargo": 0,
+              "gate": 0,
+              "tax": 3
+            }
+          ]
+        },
+        {
+          "name": "단일 큰 신호",
+          "records": [
+            {
+              "cargo": 73,
+              "gate": 3,
+              "tax": 3
+            }
+          ]
+        },
+        {
+          "name": "여섯 레코드",
+          "records": [
+            {
+              "cargo": 3,
+              "gate": 3,
+              "tax": 3
+            },
+            {
+              "cargo": 1,
+              "gate": 1,
+              "tax": 2
+            },
+            {
+              "cargo": 4,
+              "gate": 4,
+              "tax": 1
+            },
+            {
+              "cargo": 1,
+              "gate": 1,
+              "tax": 4
+            },
+            {
+              "cargo": 5,
+              "gate": 5,
+              "tax": 4
+            },
+            {
+              "cargo": 9,
+              "gate": 9,
+              "tax": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "05",
+      "title": "노이즈 정화기",
+      "subtitle": "먼저 데이터를 정화한 뒤 요약을 수집하세요.",
+      "purposes": {
+        "a": "센서 정화",
+        "b": "정화 결과 집계"
+      },
+      "recordFields": [
+        "signal",
+        "normalized",
+        "noise",
+        "cleaned"
+      ],
+      "initial": {
+        "signalTotal": 0,
+        "clearCount": 0
+      },
+      "records": [
+        {
+          "signal": 3,
+          "normalized": 0,
+          "noise": 1,
+          "cleaned": 0
+        },
+        {
+          "signal": 6,
+          "normalized": 0,
+          "noise": 3,
+          "cleaned": 0
+        },
+        {
+          "signal": 1,
+          "normalized": 0,
+          "noise": 0,
+          "cleaned": 0
+        }
+      ],
+      "ops": [
+        {
+          "id": "normalize",
+          "purpose": "a",
+          "label": "신호 기준 맞추기",
+          "code": "row.normalized = row.signal * 2 + 3;",
+          "kind": "map",
+          "field": "normalized",
+          "source": "signal",
+          "factor": 2,
+          "offset": 3
+        },
+        {
+          "id": "signal",
+          "purpose": "b",
+          "label": "정화 신호 합산",
+          "code": "signalTotal += row.normalized;",
+          "kind": "sum",
+          "target": "signalTotal",
+          "field": "normalized"
+        },
+        {
+          "id": "clean",
+          "purpose": "a",
+          "label": "노이즈 기준 보정",
+          "code": "row.cleaned = row.noise + 2;",
+          "kind": "map",
+          "field": "cleaned",
+          "source": "noise",
+          "factor": 1,
+          "offset": 2
+        },
+        {
+          "id": "clear",
+          "purpose": "b",
+          "label": "기준 통과 센서 세기",
+          "code": "if (row.cleaned >= 4) clearCount++;",
+          "kind": "count",
+          "target": "clearCount",
+          "field": "cleaned",
+          "compare": "gte",
+          "value": 4
+        }
+      ],
+      "outputs": [
+        "signalTotal",
+        "clearCount"
+      ],
+      "hint": "집계는 정화된 필드를 읽습니다. 어느 반복문이 먼저일까요?",
+      "explanation": "신호 정화와 노이즈 보정은 서로 독립적이지만 집계는 두 변환 뒤에 실행되어야 합니다. 정화 반복문 전체를 마친 다음 집계 반복문 전체를 실행하세요.",
+      "splitPossible": true,
+      "solution": {
+        "loop1": [
+          "normalize",
+          "clean"
+        ],
+        "loop2": [
+          "signal",
+          "clear"
+        ]
+      },
+      "cases": [
+        {
+          "name": "화면의 레코드",
+          "records": [
+            {
+              "signal": 3,
+              "normalized": 0,
+              "noise": 1,
+              "cleaned": 0
+            },
+            {
+              "signal": 6,
+              "normalized": 0,
+              "noise": 3,
+              "cleaned": 0
+            },
+            {
+              "signal": 1,
+              "normalized": 0,
+              "noise": 0,
+              "cleaned": 0
+            }
+          ]
+        },
+        {
+          "name": "빈 레코드",
+          "records": []
+        },
+        {
+          "name": "영 하나",
+          "records": [
+            {
+              "signal": 0,
+              "normalized": 0,
+              "noise": -1,
+              "cleaned": 0
+            }
+          ]
+        },
+        {
+          "name": "음수 하나",
+          "records": [
+            {
+              "signal": -6,
+              "normalized": 0,
+              "noise": -4,
+              "cleaned": 0
+            }
+          ]
+        },
+        {
+          "name": "큰 값 하나",
+          "records": [
+            {
+              "signal": 1998,
+              "normalized": 0,
+              "noise": 998,
+              "cleaned": 0
+            }
+          ]
+        },
+        {
+          "name": "같은 값 둘",
+          "records": [
+            {
+              "signal": 4,
+              "normalized": 0,
+              "noise": 1,
+              "cleaned": 0
+            },
+            {
+              "signal": 4,
+              "normalized": 0,
+              "noise": 1,
+              "cleaned": 0
+            }
+          ]
+        },
+        {
+          "name": "역순 한 쌍",
+          "records": [
+            {
+              "signal": 14,
+              "normalized": 0,
+              "noise": 6,
+              "cleaned": 0
+            },
+            {
+              "signal": 2,
+              "normalized": 0,
+              "noise": 0,
+              "cleaned": 0
+            }
+          ]
+        },
+        {
+          "name": "영 반복",
+          "records": [
+            {
+              "signal": 0,
+              "normalized": 0,
+              "noise": -1,
+              "cleaned": 0
+            },
+            {
+              "signal": 0,
+              "normalized": 0,
+              "noise": -1,
+              "cleaned": 0
+            },
+            {
+              "signal": 0,
+              "normalized": 0,
+              "noise": -1,
+              "cleaned": 0
+            }
+          ]
+        },
+        {
+          "name": "오름차순",
+          "records": [
+            {
+              "signal": 2,
+              "normalized": 0,
+              "noise": 0,
+              "cleaned": 0
+            },
+            {
+              "signal": 4,
+              "normalized": 0,
+              "noise": 1,
+              "cleaned": 0
+            },
+            {
+              "signal": 6,
+              "normalized": 0,
+              "noise": 2,
+              "cleaned": 0
+            },
+            {
+              "signal": 8,
+              "normalized": 0,
+              "noise": 3,
+              "cleaned": 0
+            }
+          ]
+        },
+        {
+          "name": "내림차순",
+          "records": [
+            {
+              "signal": 8,
+              "normalized": 0,
+              "noise": 3,
+              "cleaned": 0
+            },
+            {
+              "signal": 6,
+              "normalized": 0,
+              "noise": 2,
+              "cleaned": 0
+            },
+            {
+              "signal": 4,
+              "normalized": 0,
+              "noise": 1,
+              "cleaned": 0
+            },
+            {
+              "signal": 2,
+              "normalized": 0,
+              "noise": 0,
+              "cleaned": 0
+            }
+          ]
+        },
+        {
+          "name": "부호 혼합",
+          "records": [
+            {
+              "signal": -4,
+              "normalized": 0,
+              "noise": -3,
+              "cleaned": 0
+            },
+            {
+              "signal": 0,
+              "normalized": 0,
+              "noise": -1,
+              "cleaned": 0
+            },
+            {
+              "signal": 6,
+              "normalized": 0,
+              "noise": 2,
+              "cleaned": 0
+            }
+          ]
+        },
+        {
+          "name": "경계값 주변",
+          "records": [
+            {
+              "signal": 18,
+              "normalized": 0,
+              "noise": 8,
+              "cleaned": 0
+            },
+            {
+              "signal": 20,
+              "normalized": 0,
+              "noise": 9,
+              "cleaned": 0
+            },
+            {
+              "signal": 22,
+              "normalized": 0,
+              "noise": 10,
+              "cleaned": 0
+            }
+          ]
+        },
+        {
+          "name": "중복 다섯",
+          "records": [
+            {
+              "signal": 4,
+              "normalized": 0,
+              "noise": 1,
+              "cleaned": 0
+            },
+            {
+              "signal": 4,
+              "normalized": 0,
+              "noise": 1,
+              "cleaned": 0
+            },
+            {
+              "signal": 4,
+              "normalized": 0,
+              "noise": 1,
+              "cleaned": 0
+            },
+            {
+              "signal": 4,
+              "normalized": 0,
+              "noise": 1,
+              "cleaned": 0
+            },
+            {
+              "signal": 4,
+              "normalized": 0,
+              "noise": 1,
+              "cleaned": 0
+            }
+          ]
+        },
+        {
+          "name": "교대 부호",
+          "records": [
+            {
+              "signal": 2,
+              "normalized": 0,
+              "noise": 0,
+              "cleaned": 0
+            },
+            {
+              "signal": -2,
+              "normalized": 0,
+              "noise": -2,
+              "cleaned": 0
+            },
+            {
+              "signal": 2,
+              "normalized": 0,
+              "noise": 0,
+              "cleaned": 0
+            },
+            {
+              "signal": -2,
+              "normalized": 0,
+              "noise": -2,
+              "cleaned": 0
+            },
+            {
+              "signal": 2,
+              "normalized": 0,
+              "noise": 0,
+              "cleaned": 0
+            },
+            {
+              "signal": -2,
+              "normalized": 0,
+              "noise": -2,
+              "cleaned": 0
+            }
+          ]
+        },
+        {
+          "name": "큰 값과 영",
+          "records": [
+            {
+              "signal": 1998,
+              "normalized": 0,
+              "noise": 998,
+              "cleaned": 0
+            },
+            {
+              "signal": 2,
+              "normalized": 0,
+              "noise": 0,
+              "cleaned": 0
+            },
+            {
+              "signal": 0,
+              "normalized": 0,
+              "noise": -1,
+              "cleaned": 0
+            }
+          ]
+        },
+        {
+          "name": "희소 신호",
+          "records": [
+            {
+              "signal": 0,
+              "normalized": 0,
+              "noise": -1,
+              "cleaned": 0
+            },
+            {
+              "signal": 0,
+              "normalized": 0,
+              "noise": -1,
+              "cleaned": 0
+            },
+            {
+              "signal": 10,
+              "normalized": 0,
+              "noise": 4,
+              "cleaned": 0
+            },
+            {
+              "signal": 0,
+              "normalized": 0,
+              "noise": -1,
+              "cleaned": 0
+            }
+          ]
+        },
+        {
+          "name": "단일 큰 신호",
+          "records": [
+            {
+              "signal": 146,
+              "normalized": 0,
+              "noise": 72,
+              "cleaned": 0
+            }
+          ]
+        },
+        {
+          "name": "여섯 레코드",
+          "records": [
+            {
+              "signal": 6,
+              "normalized": 0,
+              "noise": 2,
+              "cleaned": 0
+            },
+            {
+              "signal": 2,
+              "normalized": 0,
+              "noise": 0,
+              "cleaned": 0
+            },
+            {
+              "signal": 8,
+              "normalized": 0,
+              "noise": 3,
+              "cleaned": 0
+            },
+            {
+              "signal": 2,
+              "normalized": 0,
+              "noise": 0,
+              "cleaned": 0
+            },
+            {
+              "signal": 10,
+              "normalized": 0,
+              "noise": 4,
+              "cleaned": 0
+            },
+            {
+              "signal": 18,
+              "normalized": 0,
+              "noise": 8,
+              "cleaned": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "06",
+      "title": "서명 릴레이",
+      "subtitle": "한 목적 안의 명령 순서까지 보존해야 합니다.",
+      "purposes": {
+        "a": "릴레이 서명",
+        "b": "경로 통계"
+      },
+      "recordFields": [
+        "digit",
+        "salt",
+        "distance"
+      ],
+      "initial": {
+        "signature": 0,
+        "distanceTotal": 0,
+        "longHops": 0
+      },
+      "records": [
+        {
+          "digit": 2,
+          "salt": 1,
+          "distance": 4
+        },
+        {
+          "digit": 4,
+          "salt": 2,
+          "distance": 8
+        },
+        {
+          "digit": 1,
+          "salt": 1,
+          "distance": 3
+        }
+      ],
+      "ops": [
+        {
+          "id": "shift",
+          "purpose": "a",
+          "label": "서명 자리 밀고 입력",
+          "code": "signature = signature * 10 + row.digit;",
+          "kind": "fold",
+          "target": "signature",
+          "field": "digit",
+          "factor": 10
+        },
+        {
+          "id": "distance",
+          "purpose": "b",
+          "label": "이동 거리 기록",
+          "code": "distanceTotal += row.distance;",
+          "kind": "sum",
+          "target": "distanceTotal",
+          "field": "distance"
+        },
+        {
+          "id": "salt",
+          "purpose": "a",
+          "label": "서명에 보정값 더하기",
+          "code": "signature += row.salt;",
+          "kind": "sum",
+          "target": "signature",
+          "field": "salt"
+        },
+        {
+          "id": "long",
+          "purpose": "b",
+          "label": "긴 도약 세기",
+          "code": "if (row.distance >= 6) longHops++;",
+          "kind": "count",
+          "target": "longHops",
+          "field": "distance",
+          "compare": "gte",
+          "value": 6
+        }
+      ],
+      "outputs": [
+        "signature",
+        "distanceTotal",
+        "longHops"
+      ],
+      "hint": "서명은 자리 밀기 → 보정값 더하기 순서입니다.",
+      "explanation": "두 목적은 독립적이므로 어느 반복문부터 실행해도 됩니다. 다만 서명 안에서는 자리 밀기 다음에 보정값을 더해야 합니다. 카드를 같은 목적에 넣는 것만으로는 충분하지 않습니다.",
+      "splitPossible": true,
+      "solution": {
+        "loop1": [
+          "shift",
+          "salt"
+        ],
+        "loop2": [
+          "distance",
+          "long"
+        ]
+      },
+      "cases": [
+        {
+          "name": "화면의 레코드",
+          "records": [
+            {
+              "digit": 2,
+              "salt": 1,
+              "distance": 4
+            },
+            {
+              "digit": 4,
+              "salt": 2,
+              "distance": 8
+            },
+            {
+              "digit": 1,
+              "salt": 1,
+              "distance": 3
+            }
+          ]
+        },
+        {
+          "name": "빈 레코드",
+          "records": []
+        },
+        {
+          "name": "영 하나",
+          "records": [
+            {
+              "digit": 0,
+              "salt": 0,
+              "distance": 0
+            }
+          ]
+        },
+        {
+          "name": "음수 하나",
+          "records": [
+            {
+              "digit": 7,
+              "salt": 0,
+              "distance": -6
+            }
+          ]
+        },
+        {
+          "name": "큰 값 하나",
+          "records": [
+            {
+              "digit": 9,
+              "salt": 0,
+              "distance": 1998
+            }
+          ]
+        },
+        {
+          "name": "같은 값 둘",
+          "records": [
+            {
+              "digit": 2,
+              "salt": 2,
+              "distance": 4
+            },
+            {
+              "digit": 2,
+              "salt": 2,
+              "distance": 4
+            }
+          ]
+        },
+        {
+          "name": "역순 한 쌍",
+          "records": [
+            {
+              "digit": 7,
+              "salt": 1,
+              "distance": 14
+            },
+            {
+              "digit": 1,
+              "salt": 1,
+              "distance": 2
+            }
+          ]
+        },
+        {
+          "name": "영 반복",
+          "records": [
+            {
+              "digit": 0,
+              "salt": 0,
+              "distance": 0
+            },
+            {
+              "digit": 0,
+              "salt": 0,
+              "distance": 0
+            },
+            {
+              "digit": 0,
+              "salt": 0,
+              "distance": 0
+            }
+          ]
+        },
+        {
+          "name": "오름차순",
+          "records": [
+            {
+              "digit": 1,
+              "salt": 1,
+              "distance": 2
+            },
+            {
+              "digit": 2,
+              "salt": 2,
+              "distance": 4
+            },
+            {
+              "digit": 3,
+              "salt": 0,
+              "distance": 6
+            },
+            {
+              "digit": 4,
+              "salt": 1,
+              "distance": 8
+            }
+          ]
+        },
+        {
+          "name": "내림차순",
+          "records": [
+            {
+              "digit": 4,
+              "salt": 1,
+              "distance": 8
+            },
+            {
+              "digit": 3,
+              "salt": 0,
+              "distance": 6
+            },
+            {
+              "digit": 2,
+              "salt": 2,
+              "distance": 4
+            },
+            {
+              "digit": 1,
+              "salt": 1,
+              "distance": 2
+            }
+          ]
+        },
+        {
+          "name": "부호 혼합",
+          "records": [
+            {
+              "digit": 8,
+              "salt": 2,
+              "distance": -4
+            },
+            {
+              "digit": 0,
+              "salt": 0,
+              "distance": 0
+            },
+            {
+              "digit": 3,
+              "salt": 0,
+              "distance": 6
+            }
+          ]
+        },
+        {
+          "name": "경계값 주변",
+          "records": [
+            {
+              "digit": 9,
+              "salt": 0,
+              "distance": 18
+            },
+            {
+              "digit": 0,
+              "salt": 1,
+              "distance": 20
+            },
+            {
+              "digit": 1,
+              "salt": 2,
+              "distance": 22
+            }
+          ]
+        },
+        {
+          "name": "중복 다섯",
+          "records": [
+            {
+              "digit": 2,
+              "salt": 2,
+              "distance": 4
+            },
+            {
+              "digit": 2,
+              "salt": 2,
+              "distance": 4
+            },
+            {
+              "digit": 2,
+              "salt": 2,
+              "distance": 4
+            },
+            {
+              "digit": 2,
+              "salt": 2,
+              "distance": 4
+            },
+            {
+              "digit": 2,
+              "salt": 2,
+              "distance": 4
+            }
+          ]
+        },
+        {
+          "name": "교대 부호",
+          "records": [
+            {
+              "digit": 1,
+              "salt": 1,
+              "distance": 2
+            },
+            {
+              "digit": 9,
+              "salt": 1,
+              "distance": -2
+            },
+            {
+              "digit": 1,
+              "salt": 1,
+              "distance": 2
+            },
+            {
+              "digit": 9,
+              "salt": 1,
+              "distance": -2
+            },
+            {
+              "digit": 1,
+              "salt": 1,
+              "distance": 2
+            },
+            {
+              "digit": 9,
+              "salt": 1,
+              "distance": -2
+            }
+          ]
+        },
+        {
+          "name": "큰 값과 영",
+          "records": [
+            {
+              "digit": 9,
+              "salt": 0,
+              "distance": 1998
+            },
+            {
+              "digit": 1,
+              "salt": 1,
+              "distance": 2
+            },
+            {
+              "digit": 0,
+              "salt": 0,
+              "distance": 0
+            }
+          ]
+        },
+        {
+          "name": "희소 신호",
+          "records": [
+            {
+              "digit": 0,
+              "salt": 0,
+              "distance": 0
+            },
+            {
+              "digit": 0,
+              "salt": 0,
+              "distance": 0
+            },
+            {
+              "digit": 5,
+              "salt": 2,
+              "distance": 10
+            },
+            {
+              "digit": 0,
+              "salt": 0,
+              "distance": 0
+            }
+          ]
+        },
+        {
+          "name": "단일 큰 신호",
+          "records": [
+            {
+              "digit": 3,
+              "salt": 1,
+              "distance": 146
+            }
+          ]
+        },
+        {
+          "name": "여섯 레코드",
+          "records": [
+            {
+              "digit": 3,
+              "salt": 0,
+              "distance": 6
+            },
+            {
+              "digit": 1,
+              "salt": 1,
+              "distance": 2
+            },
+            {
+              "digit": 4,
+              "salt": 1,
+              "distance": 8
+            },
+            {
+              "digit": 1,
+              "salt": 1,
+              "distance": 2
+            },
+            {
+              "digit": 5,
+              "salt": 2,
+              "distance": 10
+            },
+            {
+              "digit": 9,
+              "salt": 0,
+              "distance": 18
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "07",
+      "title": "실시간 충전 기록",
+      "subtitle": "현재 누적값을 읽는 기록을 분리할 수 있을까요?",
+      "purposes": {
+        "a": "에너지 충전",
+        "b": "충전 순간 기록"
+      },
+      "recordFields": [
+        "charge"
+      ],
+      "initial": {
+        "bank": 0,
+        "moments": 0
+      },
+      "records": [
+        {
+          "charge": 3
+        },
+        {
+          "charge": 2
+        },
+        {
+          "charge": 4
+        }
+      ],
+      "ops": [
+        {
+          "id": "charge",
+          "purpose": "a",
+          "label": "누적 에너지 충전",
+          "code": "bank += row.charge;",
+          "kind": "sum",
+          "target": "bank",
+          "field": "charge"
+        },
+        {
+          "id": "snapshot",
+          "purpose": "b",
+          "label": "그 순간 누적값 기록",
+          "code": "moments += bank;",
+          "kind": "stateAdd",
+          "target": "moments",
+          "source": "bank"
+        }
+      ],
+      "outputs": [
+        "bank",
+        "moments"
+      ],
+      "hint": "기록은 각 충전 직후의 bank를 읽습니다. 보류도 유효한 선택입니다.",
+      "explanation": "원본은 3, 5, 9를 차례로 기록해 moments가 17입니다. 충전을 모두 마치면 9를 세 번 읽어 27이 되고, 기록부터 하면 0입니다. 중간 누적값 의존성 때문에 분리를 보류해야 합니다.",
+      "splitPossible": false,
+      "solution": null,
+      "cases": [
+        {
+          "name": "화면의 레코드",
+          "records": [
+            {
+              "charge": 3
+            },
+            {
+              "charge": 2
+            },
+            {
+              "charge": 4
+            }
+          ]
+        },
+        {
+          "name": "빈 레코드",
+          "records": []
+        },
+        {
+          "name": "영 하나",
+          "records": [
+            {
+              "charge": 0
+            }
+          ]
+        },
+        {
+          "name": "음수 하나",
+          "records": [
+            {
+              "charge": -3
+            }
+          ]
+        },
+        {
+          "name": "큰 값 하나",
+          "records": [
+            {
+              "charge": 999
+            }
+          ]
+        },
+        {
+          "name": "같은 값 둘",
+          "records": [
+            {
+              "charge": 2
+            },
+            {
+              "charge": 2
+            }
+          ]
+        },
+        {
+          "name": "역순 한 쌍",
+          "records": [
+            {
+              "charge": 7
+            },
+            {
+              "charge": 1
+            }
+          ]
+        },
+        {
+          "name": "영 반복",
+          "records": [
+            {
+              "charge": 0
+            },
+            {
+              "charge": 0
+            },
+            {
+              "charge": 0
+            }
+          ]
+        },
+        {
+          "name": "오름차순",
+          "records": [
+            {
+              "charge": 1
+            },
+            {
+              "charge": 2
+            },
+            {
+              "charge": 3
+            },
+            {
+              "charge": 4
+            }
+          ]
+        },
+        {
+          "name": "내림차순",
+          "records": [
+            {
+              "charge": 4
+            },
+            {
+              "charge": 3
+            },
+            {
+              "charge": 2
+            },
+            {
+              "charge": 1
+            }
+          ]
+        },
+        {
+          "name": "부호 혼합",
+          "records": [
+            {
+              "charge": -2
+            },
+            {
+              "charge": 0
+            },
+            {
+              "charge": 3
+            }
+          ]
+        },
+        {
+          "name": "경계값 주변",
+          "records": [
+            {
+              "charge": 9
+            },
+            {
+              "charge": 10
+            },
+            {
+              "charge": 11
+            }
+          ]
+        },
+        {
+          "name": "중복 다섯",
+          "records": [
+            {
+              "charge": 2
+            },
+            {
+              "charge": 2
+            },
+            {
+              "charge": 2
+            },
+            {
+              "charge": 2
+            },
+            {
+              "charge": 2
+            }
+          ]
+        },
+        {
+          "name": "교대 부호",
+          "records": [
+            {
+              "charge": 1
+            },
+            {
+              "charge": -1
+            },
+            {
+              "charge": 1
+            },
+            {
+              "charge": -1
+            },
+            {
+              "charge": 1
+            },
+            {
+              "charge": -1
+            }
+          ]
+        },
+        {
+          "name": "큰 값과 영",
+          "records": [
+            {
+              "charge": 999
+            },
+            {
+              "charge": 1
+            },
+            {
+              "charge": 0
+            }
+          ]
+        },
+        {
+          "name": "희소 신호",
+          "records": [
+            {
+              "charge": 0
+            },
+            {
+              "charge": 0
+            },
+            {
+              "charge": 5
+            },
+            {
+              "charge": 0
+            }
+          ]
+        },
+        {
+          "name": "단일 큰 신호",
+          "records": [
+            {
+              "charge": 73
+            }
+          ]
+        },
+        {
+          "name": "여섯 레코드",
+          "records": [
+            {
+              "charge": 3
+            },
+            {
+              "charge": 1
+            },
+            {
+              "charge": 4
+            },
+            {
+              "charge": 1
+            },
+            {
+              "charge": 5
+            },
+            {
+              "charge": 9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "08",
+      "title": "이웃 회로의 함정",
+      "subtitle": "다음 레코드를 읽는 회로가 기다리고 있습니다.",
+      "purposes": {
+        "a": "셀 전압 증폭",
+        "b": "이웃 셀 판독"
+      },
+      "recordFields": [
+        "charge"
+      ],
+      "initial": {
+        "echo": 0
+      },
+      "records": [
+        {
+          "charge": 2
+        },
+        {
+          "charge": 5
+        },
+        {
+          "charge": 3
+        }
+      ],
+      "ops": [
+        {
+          "id": "amplify",
+          "purpose": "a",
+          "label": "현재 셀 두 배 증폭",
+          "code": "row.charge = row.charge * 2;",
+          "kind": "map",
+          "field": "charge",
+          "source": "charge",
+          "factor": 2,
+          "offset": 0
+        },
+        {
+          "id": "neighbor",
+          "purpose": "b",
+          "label": "다음 셀 전압 읽기",
+          "code": "echo += records[(i + 1) % n].charge;",
+          "kind": "neighborSum",
+          "target": "echo",
+          "field": "charge",
+          "offset": 1
+        }
+      ],
+      "outputs": [
+        "echo"
+      ],
+      "hint": "마지막 셀의 다음은 첫 셀입니다. 이웃의 변경 시점에 주목하세요.",
+      "explanation": "원본은 다음 셀에서 5, 3, 4를 읽어 echo가 12입니다. 모두 증폭한 뒤 읽으면 20, 모두 읽은 뒤 증폭하면 10입니다. 서로 다른 레코드 사이의 변경·읽기 의존성 때문에 두 순서 모두 실패합니다.",
+      "splitPossible": false,
+      "solution": null,
+      "cases": [
+        {
+          "name": "화면의 레코드",
+          "records": [
+            {
+              "charge": 2
+            },
+            {
+              "charge": 5
+            },
+            {
+              "charge": 3
+            }
+          ]
+        },
+        {
+          "name": "빈 레코드",
+          "records": []
+        },
+        {
+          "name": "영 하나",
+          "records": [
+            {
+              "charge": 0
+            }
+          ]
+        },
+        {
+          "name": "음수 하나",
+          "records": [
+            {
+              "charge": -3
+            }
+          ]
+        },
+        {
+          "name": "큰 값 하나",
+          "records": [
+            {
+              "charge": 999
+            }
+          ]
+        },
+        {
+          "name": "같은 값 둘",
+          "records": [
+            {
+              "charge": 2
+            },
+            {
+              "charge": 2
+            }
+          ]
+        },
+        {
+          "name": "역순 한 쌍",
+          "records": [
+            {
+              "charge": 7
+            },
+            {
+              "charge": 1
+            }
+          ]
+        },
+        {
+          "name": "영 반복",
+          "records": [
+            {
+              "charge": 0
+            },
+            {
+              "charge": 0
+            },
+            {
+              "charge": 0
+            }
+          ]
+        },
+        {
+          "name": "오름차순",
+          "records": [
+            {
+              "charge": 1
+            },
+            {
+              "charge": 2
+            },
+            {
+              "charge": 3
+            },
+            {
+              "charge": 4
+            }
+          ]
+        },
+        {
+          "name": "내림차순",
+          "records": [
+            {
+              "charge": 4
+            },
+            {
+              "charge": 3
+            },
+            {
+              "charge": 2
+            },
+            {
+              "charge": 1
+            }
+          ]
+        },
+        {
+          "name": "부호 혼합",
+          "records": [
+            {
+              "charge": -2
+            },
+            {
+              "charge": 0
+            },
+            {
+              "charge": 3
+            }
+          ]
+        },
+        {
+          "name": "경계값 주변",
+          "records": [
+            {
+              "charge": 9
+            },
+            {
+              "charge": 10
+            },
+            {
+              "charge": 11
+            }
+          ]
+        },
+        {
+          "name": "중복 다섯",
+          "records": [
+            {
+              "charge": 2
+            },
+            {
+              "charge": 2
+            },
+            {
+              "charge": 2
+            },
+            {
+              "charge": 2
+            },
+            {
+              "charge": 2
+            }
+          ]
+        },
+        {
+          "name": "교대 부호",
+          "records": [
+            {
+              "charge": 1
+            },
+            {
+              "charge": -1
+            },
+            {
+              "charge": 1
+            },
+            {
+              "charge": -1
+            },
+            {
+              "charge": 1
+            },
+            {
+              "charge": -1
+            }
+          ]
+        },
+        {
+          "name": "큰 값과 영",
+          "records": [
+            {
+              "charge": 999
+            },
+            {
+              "charge": 1
+            },
+            {
+              "charge": 0
+            }
+          ]
+        },
+        {
+          "name": "희소 신호",
+          "records": [
+            {
+              "charge": 0
+            },
+            {
+              "charge": 0
+            },
+            {
+              "charge": 5
+            },
+            {
+              "charge": 0
+            }
+          ]
+        },
+        {
+          "name": "단일 큰 신호",
+          "records": [
+            {
+              "charge": 73
+            }
+          ]
+        },
+        {
+          "name": "여섯 레코드",
+          "records": [
+            {
+              "charge": 3
+            },
+            {
+              "charge": 1
+            },
+            {
+              "charge": 4
+            },
+            {
+              "charge": 1
+            },
+            {
+              "charge": 5
+            },
+            {
+              "charge": 9
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

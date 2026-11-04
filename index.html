@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#101119">
+  <meta name="description" content="한 루프, 두 가지 임무. 작업을 나누고 결과를 지켜라. Split Loop를 플레이하는 90초 액션 퍼즐.">
+  <meta name="app-build" content="__BUILD_ID__">
+  <title>LOOP / SPLIT — 한 루프, 두 가지 임무</title>
+  <link rel="icon" type="image/svg+xml" href="__ICON_URL__">
+  <link rel="stylesheet" href="__STYLE_URL__">
+</head>
+<body>
+<div class="app-shell">
+  <header class="topbar">
+    <a class="brand" href="#/" data-route="/"><img src="__ICON_URL__" alt="" width="29" height="29"><span>LOOP <span class="brand-slash">/</span> SPLIT</span></a>
+    <nav class="nav-links" aria-label="주 메뉴"><a href="#/guide" data-route="/guide">플레이 가이드</a><a href="#/records" data-route="/records">내 기록</a></nav>
+    <button class="sound-toggle" type="button" aria-pressed="false">소리 꺼짐</button>
+  </header>
+  <aside class="update-banner" id="update-banner" aria-live="polite" hidden></aside>
+  <main id="app" tabindex="-1"><div class="loading-screen">루프를 준비하고 있습니다…</div></main>
+  <footer class="site-footer"><span>ONE LOOP. TWO MISSIONS. SAME RESULT.</span><span class="build-pill" title="현재 실행 버전">__BUILD_ID__</span></footer>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<dialog class="modal" id="guard-dialog" aria-labelledby="guard-title">
+  <div class="modal-card">
+    <p class="eyebrow">PROGRESS CHECK</p><h2 id="guard-title">진행 중인 루프가 있어요</h2>
+    <p id="guard-description">현재 배치와 남은 시간을 저장하고 이동할 수 있습니다.</p>
+    <p id="guard-error" role="alert" hidden></p>
+    <div class="hero-actions"><button class="btn btn-primary" data-guard="save">저장 후 이동</button><button class="btn btn-secondary" data-guard="stay">계속하기</button><button class="btn btn-ghost" data-guard="discard">저장 없이 이동</button></div>
+  </div>
+</dialog>
+<noscript>이 게임은 JavaScript를 켠 브라우저에서 실행할 수 있습니다.</noscript>
+<script type="module" src="__ENTRY_URL__"></script>
+</body></html>

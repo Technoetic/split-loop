@@ -1,0 +1,41 @@
+:root {
+  color-scheme: dark;
+  --ink: #090c11;
+  --ink-deep: #06080d;
+  --surface: #10151d;
+  --surface-raised: #171e28;
+  --surface-hover: #202934;
+  --surface-glass: rgb(15 20 29 / 90%);
+  --line: #2a3441;
+  --line-soft: #1d2632;
+  --text: #f0f3ee;
+  --muted: #9ba7b5;
+  --faint: #6c7a8c;
+  --lime: #c3f85c;
+  --lime-bright: #d3ff7b;
+  --lime-dim: rgb(195 248 92 / 10%);
+  --violet: #ab95ff;
+  --violet-bright: #c2b1ff;
+  --violet-dim: rgb(171 149 255 / 10%);
+  --red: #ff8c88;
+  --red-dim: rgb(255 140 136 / 9%);
+  --amber: #f7c771;
+  --white: #fff;
+  --font: "Segoe UI Variable", "Segoe UI", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --display: "Arial Black", "Segoe UI", "Apple SD Gothic Neo", sans-serif;
+  --mono: "Cascadia Code", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --radius-sm: 6px;
+  --radius: 12px;
+  --radius-lg: 20px;
+  --shadow-panel: 0 20px 70px rgb(0 0 0 / 15%);
+  --page: min(1280px, calc(100% - 96px));
+  --ease-out: cubic-bezier(.2, .8, .2, 1);
+}
+
+@media (max-width: 900px) {
+  :root { --page: calc(100% - 48px); }
+}
+
+@media (max-width: 540px) {
+  :root { --page: calc(100% - 36px); }
+}

@@ -1,0 +1,25 @@
+@keyframes loading-spin { to { transform: rotate(360deg); } }
+@keyframes screen-enter { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes confirmed { 0% { box-shadow: 0 0 0 0 rgb(195 248 92 / 20%); } 100% { box-shadow: 0 0 0 10px rgb(195 248 92 / 0%); } }
+@keyframes timer-warning { 0%, 100% { box-shadow: 0 0 0 0 rgb(255 140 136 / 0%); } 50% { box-shadow: 0 0 0 4px rgb(255 140 136 / 8%); } }
+
+.home-screen, .info-screen, .result-screen, .game-screen { animation: screen-enter .32s var(--ease-out) both; }
+.feedback-panel[data-status="pass"] { animation: confirmed .65s var(--ease-out) both; }
+.timer-ring[data-warning="true"] { animation: timer-warning 1.6s ease-in-out infinite; }
+.statement-card[data-dragging="true"], .statement-card.dragging { opacity: .35; transform: scale(.97); }
+.statement-card[data-selected="true"] { z-index: 1; }
+.btn:not(:disabled):active { transform: translateY(1px); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+  .home-screen, .info-screen, .result-screen, .game-screen, .feedback-panel, .timer-ring, .loading-screen::before { animation: none !important; }
+  .btn, .statement-card { transform: none !important; }
+}
+
+@media (forced-colors: active) {
+  .btn, .statement-card, .lane, .mini-btn, .purpose-chip, .modal-card, .timer-ring { border: 1px solid ButtonText; }
+  .statement-card[data-selected="true"] { outline: 3px solid Highlight; }
+  .progress-dot { border: 1px solid CanvasText; }
+  .progress-dot[data-state="current"], .progress-dot[data-state="solved"] { background: Highlight; }
+  .hero-title .accent-lime, .hero-title .accent-violet { color: CanvasText; }
+}
